@@ -1,0 +1,306 @@
+  <style>
+	  head{}
+	  body{
+	width: 100%; /* Ширина блока */
+    height: 100%;
+	padding: 20px;
+	  }
+   .layer {
+	background-color: white;
+    overflow: scroll; /* Добавляем полосы прокрутки */
+	overflow-x: 50%;
+	overflow-y: 50%;
+    width: 68%; /* Ширина блока */
+    height: 93%; /* Высота блока */
+	float: left;
+    padding: 5px; /* Поля вокруг текста */
+    border: solid 1px black; /* Параметры рамки */
+   } 
+	  .DA{height: 25px}
+	  .but {
+		 width: 50px; 
+	  }
+	  .knopki {
+	padding-left: 4%;
+	float: left;
+	float: center;
+	  }
+	  .tablica{
+		  position: relative;
+		 padding-left:25px;
+	  }
+	  .script {
+		  float:left;
+		   padding-left: 4%;
+	  }
+	
+  </style>
+<div class="layer" id="t">
+<canvas   width=1100 height=1100></canvas><br>
+</div>
+
+<div class="knopki">
+<input class="DA" id=txt type=text placeholder=" введите функцию " />
+<button class="DA"  onclick="cl4()"> ⌫  </button>
+<button class="DA" onclick="cl3()"> С </button>
+<button class="DA" onclick="cl(),cl2()"> Очистить </button>
+<input class="DA" type="color" id="col" name="body" value="#000000">
+<pre id="outp"></pre>
+
+
+
+			 
+<table class="tablica" width="10" border="0">
+  <tbody>
+	  <tr>
+		  <td><input  class="but" type="button" value="(" onClick="txt.value+='('"> </td>
+		  <td><input  class="but" type="button" value="sin(" onClick="txt.value+='sin('"></td>
+		  <td><input class="but" type="button" value="cos(" onClick="txt.value+='cos('"></td>
+		  <td><input class="but" type="button" value="tan(" onClick="txt.value+='tan('"></td>
+		  <td><input class="but" type="button" value="π" onClick="txt.value+='pi'"></td>
+		  <td><input class="but" type="button" value="e" onClick="txt.value+='e'"></td>
+	</tr>	  
+    <tr>
+		<td><input  class="but" type="button" value=")" onClick="txt.value+=')'"> </td>
+		<td><input class="but" type="button" value="abs(" onClick="txt.value+='abs('"></td>
+      <td><input class="but" type="button" value="7" onClick="txt.value+='7'"></td>
+      <td><input class="but" type="button" value="8" onClick="txt.value+='8'"></td>
+      <td><input class="but" type="button" value="9" onClick="txt.value+='9'"></td>
+	  <td><input class="but" type="button" value="*" onClick="txt.value+='*'"></td>
+    </tr>
+    <tr>
+		<td><input  class="but" type="button" value="x^2" onClick="txt.value+='^(2)'"> </td>
+		<td><input class="but" type="button" value="log(" onClick="txt.value+='log('"></td>
+      <td><input class="but" type="button" value="4" onClick="txt.value+='4'"></td>
+      <td><input class="but" type="button" value="5" onClick="txt.value+='5'"></td>
+      <td><input class="but" type="button" value="6" onClick="txt.value+='6'"></td>
+	  <td><input class="but" type="button" value="/" onClick="txt.value+='/'"></td>
+    </tr>
+    <tr>
+		<td><input  class="but" type="button" value="x^3" onClick="txt.value+='^(3)'"> </td>
+		<td><input class="but" type="button" value="exp(" onClick="txt.value+='exp('"></td>
+      <td><input class="but" type="button" value="1" onClick="txt.value+='1'"></td>
+      <td><input class="but" type="button" value="2" onClick="txt.value+='2'"></td>
+      <td><input class="but" type="button" value="3" onClick="txt.value+='3'"></td>
+	  <td><input class="but" type="button" value="+" onClick="txt.value+='+'"></td>
+		<tr>
+			<td><input  class="but" type="button" value="x^y" onClick="txt.value+='^('"> </td>
+			<td><input class="but" type="button" value="√" onClick="txt.value+='sqrt('"></td>
+      <td><input class="but" type="button" value="x" onClick="txt.value+='x'"></td>
+      <td><input class="but" type="button" value="0" onClick="txt.value+='0'"></td>
+      <td><input class="but" type="button" value="=" onclick="draw(),AddItem();"></td>
+	  <td><input class="but" type="button" value="-" onClick="txt.value+='-'"></td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<div class="script">
+
+<form name="form-bloggood-ru">
+	 <div ID="items"> 
+	 		 </div>
+	 		 </form> 
+	</div>
+<script>
+	
+//добавление полей в ввода
+var u=1;
+		var items=0; 
+		function AddItem()		{ 
+div=document.getElementById("items");
+			button=document.getElementById("add"); items++;
+			newitem="<input type=\"text\" name=\"item\" id=\"q"+u+"\" value=\""+ document.getElementById("txt").value+"\"" + items; 
+			newitem+="\" size=\"37\"> <input type=\"button\" name=\"item\" value=\"X\" onClick=\"rem("+u+"),re()\">  <input type=\"color\" id=\"r"+u+"\" name=\"item\" value=\""+ document.getElementById("col").value+"\">   <br>" ; 
+			var newnode=document.createElement("d");
+			newnode.id = u;
+			newnode.innerHTML=newitem;
+			div.insertBefore(newnode,button); 
+			u=u+1;
+}
+	
+	
+	function rem(id) {
+    var elem = document.getElementById(id);
+    return elem.parentNode.removeChild(elem);
+}
+	
+let scale = 20;
+let step = 1;
+let cnvs = document.querySelector('canvas');
+let ctx = cnvs.getContext('2d');
+
+cl();
+
+function cl2(){
+document.getElementById("txt").value="";	
+for(let r = 1; r<u; r+=1) {	
+	
+var eleme=document.getElementById("q"+r);
+if(!eleme){} else {	rem(r)}
+	
+	
+	
+}}
+	
+function cl3(){
+document.getElementById("txt").value="";		
+}
+	
+	
+function cl(){
+
+const context = cnvs.getContext('2d'); context.clearRect(0, 0, cnvs.width, cnvs.height);
+
+
+
+ctx.lineWidth = 0.1;
+for (var i = step*scale; i < cnvs.width; i += step*scale) { //вертикальные
+  polyline('#808080', [[i+10, 0], [i+10, cnvs.height]]);
+}
+
+for (var i = step*scale; i < cnvs.height; i += step*scale) { //Горизонтальные
+  polyline('#808080', [[0, i+10], [cnvs.width, i+10]]);
+}
+
+ctx.lineWidth = 2;
+//Ось X 
+polyline('black', [[0, cnvs.height / 2], [cnvs.width, cnvs.height / 2]]);
+
+// ось Y
+polyline('black', [[cnvs.width / 2, 0], [cnvs.width / 2, cnvs.height]]);
+
+ctx.strokeStyle = "black";
+    ctx.lineWidth = 1;
+    for (var i = 0; i < cnvs.width; i += 20) {
+        ctx.font = '10px Segoe UI';
+        labelX = i * 0.1/2;
+		labelX = labelX.toFixed(0); //toFixed - char after comma
+		if (i==0)
+		{ctx.strokeText((labelX), cnvs.width / 2+5 , cnvs.height / 2+10 ); } 
+		else
+		{ctx.strokeText((labelX), cnvs.width / 2 +10 , cnvs.height / 2+i+5 );
+        ctx.strokeText((labelX) ,  cnvs.width / 2+i-1  , cnvs.height / 2 +15 );
+		 
+		ctx.strokeText((labelX), cnvs.width / 2 +10 , cnvs.height / 2-i+5 );
+        ctx.strokeText((labelX) ,  cnvs.width / 2-i-1  , cnvs.height / 2 +15 );
+		}
+    }	}
+	
+function draw(){
+	
+	
+var str = document.getElementById("txt").value;
+        var str = str.replace(new RegExp("sin","g"), "Math.sin");
+		var str = str.replace(new RegExp("cos","g"), "Math.cos");
+		var str = str.replace(new RegExp("tan","g"), "Math.tan");
+		var str = str.replace(new RegExp("pi","g"), "Math.PI");
+        var str = str.replace(new RegExp("e","g"), "Math.E");
+        var str = str.replace(new RegExp("abs","g"), "Math.abs");
+        var str = str.replace(new RegExp("round","g"), "Math.round");
+        var str = str.replace(new RegExp("ceil","g"), "Math.ceil");
+        var str = str.replace(new RegExp("floor","g"), "Math.floor");
+        var str = str.replace(new RegExp("log","g"), "Math.log");
+        var str = str.replace(new RegExp("exp","g"), "Math.exp");
+        var str = str.replace(new RegExp("sqrt","g"), "Math.sqrt");
+		
+    if (str.indexOf("^") > -1) {
+        var tab = [];
+        var powfunc="Math.pow";
+        var joker = "___joker___";
+        while (str.indexOf("(") > -1) {
+            str = str.replace(/(\([^\(\)]*\))/g, function(m, t) {
+                tab.push(t);
+                return (joker + (tab.length - 1));
+            });
+        }
+
+        tab.push(str);
+        str = joker + (tab.length - 1);
+        while (str.indexOf(joker) > -1) {
+            str = str.replace(new RegExp(joker + "(\\d+)", "g"), function(m, d) {
+                return tab[d].replace(/(\w*)\^(\w*)/g, powfunc+"($1,$2)");
+            });
+        }
+    }
+	
+	
+let y = x => eval(str);
+
+ctx.lineWidth = 1;
+let pts = [];
+for(let x = -cnvs.width/2; x<cnvs.width/2; x+=0.01) {
+    pts.push([cnvs.width/2+x, cnvs.height/2 - y(x/scale)*scale]);
+}
+polyline(document.getElementById("col").value, pts);
+}
+
+function polyline(color, pts) {
+  ctx.strokeStyle = color;
+  ctx.beginPath();
+  pts.forEach((p, i) => i ? ctx.lineTo(...p) : ctx.moveTo(...p));
+  ctx.stroke();
+}
+	
+	function re(){
+	
+	cl();
+for(let r = 1; r<u; r+=1) {	
+	
+var eleme=document.getElementById("q"+r);
+if(!eleme){} else {
+
+var str = document.getElementById("q"+r).value;
+        var str = str.replace(new RegExp("sin","g"), "Math.sin");
+		var str = str.replace(new RegExp("cos","g"), "Math.cos");
+		var str = str.replace(new RegExp("tan","g"), "Math.tan");
+		var str = str.replace(new RegExp("pi","g"), "Math.PI");
+        var str = str.replace(new RegExp("e","g"), "Math.E");
+        var str = str.replace(new RegExp("asin","g"), "Math.asin");
+        var str = str.replace(new RegExp("acos","g"), "Math.acos");
+        var str = str.replace(new RegExp("atan","g"), "Math.atan");
+        var str = str.replace(new RegExp("abs","g"), "Math.abs");
+        var str = str.replace(new RegExp("round","g"), "Math.round");
+        var str = str.replace(new RegExp("ceil","g"), "Math.ceil");
+        var str = str.replace(new RegExp("floor","g"), "Math.floor");
+        var str = str.replace(new RegExp("log","g"), "Math.log");
+        var str = str.replace(new RegExp("exp","g"), "Math.exp");
+        var str = str.replace(new RegExp("sqrt","g"), "Math.sqrt");
+		
+    if (str.indexOf("^") > -1) {
+        var tab = [];
+        var powfunc="Math.pow";
+        var joker = "___joker___";
+        while (str.indexOf("(") > -1) {
+            str = str.replace(/(\([^\(\)]*\))/g, function(m, t) {
+                tab.push(t);
+                return (joker + (tab.length - 1));
+            });
+        }
+
+        tab.push(str);
+        str = joker + (tab.length - 1);
+        while (str.indexOf(joker) > -1) {
+            str = str.replace(new RegExp(joker + "(\\d+)", "g"), function(m, d) {
+                return tab[d].replace(/(\w*)\^(\w*)/g, powfunc+"($1,$2)");
+            });
+        }
+    }
+	
+	
+let y = x => eval(str);
+
+ctx.lineWidth = 1;
+let pts = [];
+for(let x = -cnvs.width/2; x<cnvs.width/2; x+=0.01) {
+    pts.push([cnvs.width/2+x, cnvs.height/2 - y(x/scale)*scale]);
+}
+polyline(document.getElementById("r"+r).value, pts); }}
+}
+	function cl4(){
+        document.getElementById("txt").value = document.getElementById("txt").value.substring(0, document.getElementById("txt").value.length - 1);
+}
+document.getElementById('t').scrollTop += 150;
+    document.getElementById('t').scrollLeft += 300;
+</script>
+
